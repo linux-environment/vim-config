@@ -62,6 +62,7 @@ Plugin 'linux-environment/vim-fugitive'         " github 操作 :Git commit, :Gi
 Plugin 'linux-environment/nerdtree'             " 侧边栏文件
 Plugin 'linux-environment/youcompleteme'        " C/C++自动补全
 Plugin 'linux-environment/vim-gutentags'        " 自动更新 ctag
+Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
 
 call vundle#end()
 
@@ -88,19 +89,20 @@ let g:multi_cursor_quit_key            = '<Esc>'
 
 " nerdtree 打开目录时候自动运行
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+autocmd VimEnter * if argc()==1&&isdirectory(argv()[0])&&!exists("s:std_in")|exe 'NERDTree' argv()[0]|wincmd p|ene|exe 'cd '.argv()[0]|endif
 let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
 " c/c++ 语言自动补全 youcompleteme
-let g:ycm_global_ycm_extra_conf = '/home/dingjing/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'    " 默认配置
+let g:ycm_global_ycm_extra_conf =
+  \ '/home/dingjing/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'    " 默认配置
 let g:ycm_collect_identifiers_from_tag_files=1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_confirm_extra_conf=0
 let g:ycm_key_invoke_completion='<C-/>'
-let g:ycm_goto_buffer_command='new-or-existing-tab' "open new tabe when jump to definition
-let g:ycm_autoclose_preview_window_after_completion=1 " auto-close preview window after select a completion string
-let g:ycm_autoclose_preview_window_after_insertion=1 " close preview window after leaving insert mode
+let g:ycm_goto_buffer_command='new-or-existing-tab'     "open new tabe when jump to definition
+let g:ycm_autoclose_preview_window_after_completion=1   " auto-close preview window after select a completion string
+let g:ycm_autoclose_preview_window_after_insertion=1    " close preview window after leaving insert mode
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>jdf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>jdc :YcmCompleter GoToDeclaration<CR>
@@ -122,6 +124,31 @@ endif
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']    " 配置 ctags 的参数
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxIi']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+
+" rainbow_parentheses 成对括号
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " c 语言插件 
