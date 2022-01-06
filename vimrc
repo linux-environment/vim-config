@@ -63,6 +63,7 @@ Plugin 'linux-environment/nerdtree'             " 侧边栏文件
 Plugin 'linux-environment/youcompleteme'        " C/C++自动补全
 Plugin 'linux-environment/vim-gutentags'        " 自动更新 ctag
 Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
+Plugin 'linux-environment/vim-commentary'       " 多行注释
 
 call vundle#end()
 
@@ -149,6 +150,11 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+" vim-commentary
+" 使用方法
+"   gcc 注释一行
+"   选中 + gc 注释和取消注释
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " c 语言插件 
