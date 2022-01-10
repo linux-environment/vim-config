@@ -9,8 +9,8 @@ filetype off
 set runtimepath+=/home/dingjing/.vim/vim_runtime/
 set rtp+=/home/dingjing/.vim/bundle/Vundle.vim/
 hi clear
-syntax off
-syntax reset
+"syntax off
+"syntax reset
 syntax on
 retab                                           " 以前的tab也用4空格代替
 set nu
@@ -43,6 +43,7 @@ set backspace=indent,eol,start                  " 设置退格删除
 set guifont=Courier_New:h9:cANSI
 set clipboard+=unnamed                          " 共享粘贴板
 set fileencoding=utf-8
+set background=dark                             " 使用黑色主题
 
 " 按住 shift 再鼠标右键
 if has('mouse')
@@ -64,6 +65,8 @@ Plugin 'linux-environment/youcompleteme'        " C/C++自动补全
 Plugin 'linux-environment/vim-gutentags'        " 自动更新 ctag
 Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
 Plugin 'linux-environment/vim-commentary'       " 多行注释
+Plugin 'linux-environment/gruvbox'              " 主题颜色
+Plugin 'linux-environment/vim-indent-guides'    " 缩进显示
 
 call vundle#end()
 
@@ -144,17 +147,27 @@ let g:rbpt_colorpairs = [
     \ ['darkred',     'DarkOrchid3'],
     \ ['red',         'firebrick3'],
     \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
+
+let g:rbpt_max = 36
+let g:rbpt_loadcmd_toggle = 1
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
+au VimEnter * RainbowParenthesesLoadSquare
+au VimEnter * RainbowParenthesesLoadBraces
+au VimEnter * RainbowParenthesesLoadChevrons
 
 " vim-commentary
 " 使用方法
 "   gcc 注释一行
 "   选中 + gc 注释和取消注释
+
+" gruvbox 主题颜色 
+colorscheme gruvbox
+
+" vim-indent-guides 缩进显示
+let g:indent_guides_enable_on_vim_startup = 1
+au VimEnter * IndentGuidesEnable
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " c 语言插件 
