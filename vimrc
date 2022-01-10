@@ -67,6 +67,7 @@ Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
 Plugin 'linux-environment/vim-commentary'       " 多行注释
 Plugin 'linux-environment/gruvbox'              " 主题颜色
 Plugin 'linux-environment/vim-indent-guides'    " 缩进显示
+Plugin 'linux-environment/ferret'               " 多文件搜索
 
 call vundle#end()
 
@@ -168,6 +169,9 @@ colorscheme gruvbox
 let g:indent_guides_enable_on_vim_startup = 1
 au VimEnter * IndentGuidesEnable
 
+" ferret 多文件搜索
+" 使用方法
+"   在 vim 命令模式下执行 :Ack <要搜索的字符串>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " c 语言插件 
