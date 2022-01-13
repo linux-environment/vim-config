@@ -166,8 +166,8 @@ au VimEnter * RainbowParenthesesLoadChevrons
 colorscheme gruvbox
 
 " vim-indent-guides 缩进显示
-let g:indent_guides_enable_on_vim_startup = 1
-au VimEnter * IndentGuidesEnable
+let g:indent_guides_enable_on_vim_startup = 0
+" au VimEnter * IndentGuidesEnable
 
 " ferret 多文件搜索
 " 使用方法
