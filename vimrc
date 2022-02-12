@@ -200,6 +200,10 @@ func SetFileTitle()
         call append(line(".")+1, "")
     elseif &filetype == 'md'
         call setline(1, "")
+    elseif &filetype == 'js'
+        call setline(1, "")
+    elseif &filetype == 'html'
+        call setline(1, "")
     elseif &filetype == 'asm'
         call setline(1,"########################################################")
         call append(line("."), "# FileName     : ".expand("%"))
