@@ -6,11 +6,26 @@
 
 set nocompatible
 filetype off
-set runtimepath+=/etc/vim/vim_runtime/
+"set runtimepath+=/etc/vim/vim_runtime/
 set rtp+=/etc/vim/bundle/Vundle.vim/
+
+call vundle#begin()
+Plugin 'linux-environment/Vundle.vim'           " vim 插件管理
+Plugin 'linux-environment/vim-airline'          " 底栏信息
+Plugin 'linux-environment/syntastic'            " 语法高亮与错误检查
+Plugin 'linux-environment/vim-multiple-cursors' " 多行编辑
+Plugin 'linux-environment/vim-fugitive'         " github 操作 :Git commit, :Git rebase -1, Git mergetool, Gdiffsplit
+Plugin 'linux-environment/nerdtree'             " 侧边栏文件
+Plugin 'linux-environment/youcompleteme'        " C/C++自动补全
+Plugin 'linux-environment/vim-gutentags'        " 自动更新 ctag
+Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
+Plugin 'linux-environment/vim-commentary'       " 多行注释
+Plugin 'linux-environment/gruvbox'              " 主题颜色
+Plugin 'linux-environment/vim-indent-guides'    " 缩进显示
+Plugin 'linux-environment/ferret'               " 多文件搜索
+call vundle#end()
+
 hi clear
-"syntax off
-"syntax reset
 syntax on
 retab                                           " 以前的tab也用4空格代替
 set nu
@@ -50,30 +65,14 @@ if has('mouse')
 set mouse-=a                                    " 使用鼠标
 endif
 
+filetype plugin indent on
+
 let g:go_version_warning = 0                    " 去除版本信息警告
 
 language message zh_CN.UTF-8
 
-call vundle#begin()
-Plugin 'linux-environment/Vundle.vim'           " vim 插件管理
-Plugin 'linux-environment/vim-airline'          " 底栏信息
-Plugin 'linux-environment/syntastic'            " 语法高亮与错误检查
-Plugin 'linux-environment/vim-multiple-cursors' " 多行编辑
-Plugin 'linux-environment/vim-fugitive'         " github 操作 :Git commit, :Git rebase -1, Git mergetool, Gdiffsplit
-Plugin 'linux-environment/nerdtree'             " 侧边栏文件
-Plugin 'linux-environment/youcompleteme'        " C/C++自动补全
-Plugin 'linux-environment/vim-gutentags'        " 自动更新 ctag
-Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
-Plugin 'linux-environment/vim-commentary'       " 多行注释
-Plugin 'linux-environment/gruvbox'              " 主题颜色
-Plugin 'linux-environment/vim-indent-guides'    " 缩进显示
-Plugin 'linux-environment/ferret'               " 多文件搜索
-
-call vundle#end()
-
 nnoremap <C-c> :call multiple_cursors#quit()<CR>
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
-filetype plugin indent on
 
 """""""""""""""""""""""""""""" 插件配置 """""""""""""""""""""""""""""""""""""""""
 " vim-airline 漂亮的底栏
@@ -225,31 +224,32 @@ func SetFileTitle()
         call append(line(".")+2, "# Mail         : dingjing@live.cn")
         call append(line(".")+3, "# Created Time : ".strftime("%c"))
         call append(line('.')+4, "########################################################")
-    else
+    elseif &filetype == 'c'
         call setline(1,"/*************************************************************************")
         call append(line("."),      "> FileName: ".expand("%"))
         call append(line(".")+1,    "> Author  : DingJing")
         call append(line(".")+2,    "> Mail    : dingjing@live.cn")
         call append(line(".")+3,    "> Created Time: ".strftime("%c"))
         call append(line(".")+4, " ************************************************************************/")
-    endif
-    if expand("%:e") == 'cpp'
+        call append(line(".")+5, "")
+    elseif &filetype == 'java'
+        call append(line(".")+6,"public class ".expand("%:r"))
+        call append(line(".")+7,"")
+    elseif expand("%:e") == 'cpp'
+        call setline(1,"/*************************************************************************")
+        call append(line("."),      "> FileName: ".expand("%"))
+        call append(line(".")+1,    "> Author  : DingJing")
+        call append(line(".")+2,    "> Mail    : dingjing@live.cn")
+        call append(line(".")+3,    "> Created Time: ".strftime("%c"))
+        call append(line(".")+4, " ************************************************************************/")
         call append(line(".")+6, "#include <iostream>")
         call append(line(".")+7, "using namespace std;")
         call append(line(".")+8, "")
-    endif
-    if &filetype == 'c'
-        call append(line(".")+5, "")
-    endif
-    if expand("%:e") == 'h'
+    elseif expand("%:e") == 'h'
         call append(line(".")+5, "#ifndef _".toupper(expand("%:r"))."_H")
         call append(line(".")+6, "#define _".toupper(expand("%:r"))."_H")
         call append(line(".")+7, "")
         call append(line(".")+8, "#endif")
-    endif
-    if &filetype == 'java'
-        call append(line(".")+6,"public class ".expand("%:r"))
-        call append(line(".")+7,"")
     endif
 endfunc
 
