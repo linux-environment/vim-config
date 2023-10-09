@@ -104,8 +104,8 @@ let g:NERDTreeDirArrowCollapsible = '▾'
 
 " c/c++ 语言自动补全 youcompleteme
 "   1. 先进入 ~/.vim/youcompleteme/下并执行 install.py --all --clangd-completer
-"let g:ycm_global_ycm_extra_conf =
-"  \ '/home/dingjing/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'    " 默认配置
+let g:ycm_global_ycm_extra_conf =
+  \ '/home/dingjing/.vim/.ycm_extra_conf.py'                            " 默认配置
 let g:ycm_key_invoke_completion='<C-/>'
 let g:ycm_goto_buffer_command='new-or-existing-tab'                     " open new tabe when jump to definition
 let g:ycm_use_clangd = 1
