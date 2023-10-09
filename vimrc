@@ -16,13 +16,15 @@ Plugin 'linux-environment/syntastic'            " 语法高亮与错误检查
 Plugin 'linux-environment/vim-multiple-cursors' " 多行编辑
 Plugin 'linux-environment/vim-fugitive'         " github 操作 :Git commit, :Git rebase -1, Git mergetool, Gdiffsplit
 Plugin 'linux-environment/nerdtree'             " 侧边栏文件
-Plugin 'linux-environment/youcompleteme'        " C/C++自动补全
+Plugin 'linux-environment/completor.vim'        " 自动补全插件
 Plugin 'linux-environment/vim-gutentags'        " 自动更新 ctag
 Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
 Plugin 'linux-environment/vim-commentary'       " 多行注释
 Plugin 'linux-environment/gruvbox'              " 主题颜色
 Plugin 'linux-environment/vim-indent-guides'    " 缩进显示
 Plugin 'linux-environment/ferret'               " 多文件搜索
+
+Plugin 'ycm-core/YouCompleteMe'                 " C/C++自动补全
 call vundle#end()
 
 hi clear
@@ -74,6 +76,8 @@ language message zh_CN.UTF-8
 nnoremap <C-c> :call multiple_cursors#quit()<CR>
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
 
+vnoremap <C-y> "+y                              " 支持在Visual模式下，通过C-y复制到系统剪切板
+
 """""""""""""""""""""""""""""" 插件配置 """""""""""""""""""""""""""""""""""""""""
 " vim-airline 漂亮的底栏
 let g:airline#extensions#tabline#enabled = 1                " 路径
@@ -98,20 +102,25 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
 " c/c++ 语言自动补全 youcompleteme
-let g:ycm_global_ycm_extra_conf =
-  \ '/home/dingjing/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'    " 默认配置
+"   1. 先进入 ~/.vim/youcompleteme/下并执行 install.py --all --clangd-completer
+"let g:ycm_global_ycm_extra_conf =
+"  \ '/home/dingjing/.vim/bundle/youcompleteme/third_party/ycmd/.ycm_extra_conf.py'    " 默认配置
 let g:ycm_key_invoke_completion='<C-/>'
 let g:ycm_goto_buffer_command='new-or-existing-tab'                     " open new tabe when jump to definition
-
+let g:ycm_use_clangd = 1
+let g:ycm_clangd_binary_path = '/usr/bin/clangd'
+let g:ycm_clangd_uses_ycmd_caching = 1
 let g:ycm_auto_trigger = 1                                              " 0:关闭补全触发器; 1:打开语义补全触发器
 let g:ycm_confirm_extra_conf = 0                                        " 允许自动加载 .ycm_extra_conf.py
-let g:ycm_max_num_candidates = 10                                       " 语义补全最大候选数量
+let g:ycm_max_num_candidates = 20                                       " 语义补全最大候选数量
+let g:ycm_show_diagnostics_ui = 1                                       "
 let g:ycm_add_preview_to_completeopt = 1                                " 为当前补全选项在vim顶部窗口增加预览窗口，用来显示函数原型
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_min_num_of_chars_for_completion = 1                           " 触发补全的最小字符数
+let g:ycm_update_diagnostics_in_insert_mode = 1
 let g:ycm_collect_identifiers_from_tag_files = 1
 let g:ycm_min_num_identifier_candidate_chars = 0                        " 候选补全列表中显示的最小字符数
-let g:ycm_collect_identifiers_from_tags_files = 0                       " 开启tags补全引擎
+let g:ycm_collect_identifiers_from_tags_files = 1                       " 开启tags补全引擎
 let g:ycm_filepath_completion_use_working_dir = 0                       " 按照文件所在目录解释相对路径
 let g:ycm_disable_for_files_larger_than_kb = 10240                      " 大于 xxxkb 不再自动补全
 let g:ycm_autoclose_preview_window_after_insertion = 1                  " close preview window after leaving insert mode
@@ -120,12 +129,42 @@ let g:ycm_filetype_whitelist = {'*' : 1}                                " 文件
 let g:ycm_filetype_blacklist = 
   \ {'md' : 1}  
   \                                                                     " 黑名单
+let g:ycm_error_symbol = '>>'                                           " 错误提示符号
+let g:ycm_warning_symbol = '>>'                                         " 警告提示符号
+let g:ycm_echo_current_diagnostic = 1                                   " 打开错误提示
+let g:ycm_echo_current_diagnostic = 'virtual-text'                      " 错误提示信息
+let g:ycm_collect_identifiers_from_tags_files = 1                       " tag 文件补全
+let g:ycm_filepath_completion_use_working_dir = 1
+let g:ycm_semantic_triggers =  {
+  \   'c': ['->', '.'],
+  \   'objc': ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+  \            're!\[.*\]\s'],
+  \   'ocaml': ['.', '#'],
+  \   'cpp,cuda,objcpp': ['->', '.', '::'],
+  \   'perl': ['->'],
+  \   'php': ['->', '::'],
+  \   'cs,d,elixir,go,groovy,java,javascript,julia,perl6,python,scala,typescript,vb': ['.'],
+  \   'ruby,rust': ['.', '::'],
+  \   'lua': ['.', ':'],
+  \   'erlang': [':'],
+  \ }
+
 
 nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
 nnoremap <leader>jdf :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>jdc :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>st :YcmCompleter GetType<CR>
 nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+
+" completor.vim 自动补全插件配置
+" c/c++ 配置，使用 clang 补全
+" 另外 可以在项目根目录下创建 .clang_complete 然后加入配置:
+"   -std=c++11
+"   -I/path/to/include1/
+"   -I/path/to/include2/
+let g:completor_clang_binary = '/usr/bin/clang'
+let g:completor_auto_trigger = 1                                        " 自动打开补全
+
 
 " vim-gutentags 配置
 " 使用说明: 
@@ -179,7 +218,7 @@ au VimEnter * RainbowParenthesesLoadChevrons
 colorscheme gruvbox
 
 " vim-indent-guides 缩进显示
-let g:indent_guides_enable_on_vim_startup = 0
+let g:indent_guides_enable_on_vim_startup = 1
 " au VimEnter * IndentGuidesEnable
 
 " ferret 多文件搜索
@@ -194,6 +233,7 @@ let g:C_UseTool_doxygen = 'no'
 
 " 手动 ctags 生成, (1) ctags -R . (2) ctrl + ] 到定义的位置 ctrl + t 返回
 let g:autotagStartMethod = 'fork'
+
 
 
 " 设置文件头信息
