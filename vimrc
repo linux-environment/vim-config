@@ -11,9 +11,9 @@ set rtp+=/etc/vim/bundle/Vundle.vim/
 
 call vundle#begin()
 Plugin 'linux-environment/Vundle.vim'           " vim 插件管理
-Plugin 'linux-environment/vim-airline'          " 底栏信息
+Plugin 'linux-environment/vim-airline'          " 底栏信息; bn 切换到下一个文件, bp 切换到上一个文件
 Plugin 'linux-environment/syntastic'            " 语法高亮与错误检查
-Plugin 'linux-environment/vim-multiple-cursors' " 多行编辑
+Plugin 'linux-environment/vim-multiple-cursors' " 多行编辑; 选中多行后按 Ctrl+n 即可进入多行编译
 Plugin 'linux-environment/vim-fugitive'         " github 操作 :Git commit, :Git rebase -1, Git mergetool, Gdiffsplit
 Plugin 'linux-environment/nerdtree'             " 侧边栏文件
 Plugin 'linux-environment/completor.vim'        " 自动补全插件
@@ -22,7 +22,7 @@ Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
 Plugin 'linux-environment/vim-commentary'       " 多行注释
 Plugin 'linux-environment/gruvbox'              " 主题颜色
 Plugin 'linux-environment/vim-indent-guides'    " 缩进显示
-Plugin 'linux-environment/ferret'               " 多文件搜索
+Plugin 'linux-environment/ferret'               " 多文件搜索; 执行： Ack xxx 即可搜索
 
 Plugin 'ycm-core/YouCompleteMe'                 " C/C++自动补全
 call vundle#end()
@@ -82,6 +82,7 @@ vnoremap <C-y> "+y                              " 支持在Visual模式下，通
 " vim-airline 漂亮的底栏
 let g:airline#extensions#tabline#enabled = 1                " 路径
 let g:airline#extensions#tabline#formatter = 'unique_tail'  " 路径展示
+nnoremap <C-p> :bp<CR>                          " ctrl + p 上一个Buffer文件
 
 " vim-multiple-cursors 多行编辑
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
