@@ -134,7 +134,6 @@ let g:ycm_error_symbol = '>>'                                           " 错误
 let g:ycm_warning_symbol = '>>'                                         " 警告提示符号
 let g:ycm_echo_current_diagnostic = 1                                   " 打开错误提示
 let g:ycm_echo_current_diagnostic = 'virtual-text'                      " 错误提示信息
-let g:ycm_collect_identifiers_from_tags_files = 1                       " tag 文件补全
 let g:ycm_filepath_completion_use_working_dir = 1
 let g:ycm_semantic_triggers =  {
   \   'c': ['->', '.'],
