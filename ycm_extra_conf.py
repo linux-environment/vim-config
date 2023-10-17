@@ -111,9 +111,8 @@ get_path( 'include' ),
 '/usr/include/blkid',
 '-I',
 '/usr/include/glibmm-2.4',
-'-I',
-'/data/env/kernel/include'
 ]
+# '/data/env/kernel/include'
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
 # compile_commands.json file to use that instead of 'flags'. See here for
@@ -153,34 +152,34 @@ def PathToPythonUsedDuringBuild():
 
 
 def Settings( **kwargs ):
-  # Do NOT import ycm_core at module scope.
-  import ycm_core
+    # Do NOT import ycm_core at module scope.
+    import ycm_core
 
-  global database
-  if database is None and p.exists( compilation_database_folder ):
-    database = ycm_core.CompilationDatabase( compilation_database_folder )
+    global database
+    if database is None and p.exists( compilation_database_folder ):
+        database = ycm_core.CompilationDatabase( compilation_database_folder )
 
-  language = kwargs[ 'language' ]
+    language = kwargs[ 'language' ]
 
-  if language == 'cfamily':
     # If the file is a header, try to find the corresponding source file and
     # retrieve its flags from the compilation database if using one. This is
     # necessary since compilation databases don't have entries for header files.
     # In addition, use this source file as the translation unit. This makes it
     # possible to jump from a declaration in the header file to its definition
     # in the corresponding source file.
-    filename = FindCorrespondingSourceFile( kwargs[ 'filename' ] )
+    if language == 'cfamily':
+        filename = FindCorrespondingSourceFile( kwargs[ 'filename' ] )
 
     if not database:
-      return {
-        'flags': flags,
-        'include_paths_relative_to_dir': DIR_OF_THIS_SCRIPT,
-        'override_filename': filename
-      }
+        return {
+            'flags': flags,
+            'include_paths_relative_to_dir': DIR_OF_THIS_SCRIPT,
+            'override_filename': filename
+        }
 
     compilation_info = database.GetCompilationInfoForFile( filename )
     if not compilation_info.compiler_flags_:
-      return {}
+        return {}
 
     # Bear in mind that compilation_info.compiler_flags_ does NOT return a
     # python list, but a "list-like" StringVec object.
@@ -190,40 +189,40 @@ def Settings( **kwargs ):
     # does NOT need to remove the stdlib flag. DO NOT USE THIS IN YOUR
     # ycm_extra_conf IF YOU'RE NOT 100% SURE YOU NEED IT.
     try:
-      final_flags.remove( '-stdlib=libc++' )
+        final_flags.remove( '-stdlib=libc++' )
     except ValueError:
-      pass
+        pass
 
     return {
-      'flags': final_flags,
-      'include_paths_relative_to_dir': compilation_info.compiler_working_dir_,
-      'override_filename': filename
+        'flags': final_flags,
+        'include_paths_relative_to_dir': compilation_info.compiler_working_dir_,
+        'override_filename': filename
     }
 
-  if language == 'python':
-    return {
-      'interpreter_path': PathToPythonUsedDuringBuild(),
-      'ls': {
-        'python': {
-          'analysis': {
-            'extraPaths': [
-              p.join( DIR_OF_THIS_SCRIPT ),
-              p.join( DIR_OF_THIRD_PARTY, 'bottle' ),
-              p.join( DIR_OF_THIRD_PARTY, 'regex-build' ),
-              p.join( DIR_OF_THIRD_PARTY, 'frozendict' ),
-              p.join( DIR_OF_THIRD_PARTY, 'jedi_deps', 'jedi' ),
-              p.join( DIR_OF_THIRD_PARTY, 'jedi_deps', 'parso' ),
-              p.join( DIR_OF_WATCHDOG_DEPS, 'watchdog', 'build', 'lib3' ),
-              p.join( DIR_OF_WATCHDOG_DEPS, 'pathtools' ),
-              p.join( DIR_OF_THIRD_PARTY, 'waitress' )
-            ],
-            'useLibraryCodeForTypes': True
-          }
+    if language == 'python':
+        return {
+            'interpreter_path': PathToPythonUsedDuringBuild(),
+            'ls': {
+                'python': {
+                    'analysis': {
+                        'extraPaths': [
+                            p.join( DIR_OF_THIS_SCRIPT ),
+                            p.join( DIR_OF_THIRD_PARTY, 'bottle' ),
+                            p.join( DIR_OF_THIRD_PARTY, 'regex-build' ),
+                            p.join( DIR_OF_THIRD_PARTY, 'frozendict' ),
+                            p.join( DIR_OF_THIRD_PARTY, 'jedi_deps', 'jedi' ),
+                            p.join( DIR_OF_THIRD_PARTY, 'jedi_deps', 'parso' ),
+                            p.join( DIR_OF_WATCHDOG_DEPS, 'watchdog', 'build', 'lib3' ),
+                            p.join( DIR_OF_WATCHDOG_DEPS, 'pathtools' ),
+                            p.join( DIR_OF_THIRD_PARTY, 'waitress' )
+                        ],
+                        'useLibraryCodeForTypes': True
+                    }
+                }
+            }
         }
-      }
-    }
 
-  return {}
+    return {}
 
 
 def PythonSysPath( **kwargs ):
