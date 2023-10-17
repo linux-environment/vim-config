@@ -1,37 +1,10 @@
-# This file is NOT licensed under the GPLv3, which is the license for the rest
-# of YouCompleteMe.
-#
-# Here's the license text for this file:
-#
-# This is free and unencumbered software released into the public domain.
-#
-# Anyone is free to copy, modify, publish, use, compile, sell, or
-# distribute this software, either in source code form or as a compiled
-# binary, for any purpose, commercial or non-commercial, and by any
-# means.
-#
-# In jurisdictions that recognize copyright laws, the author or authors
-# of this software dedicate any and all copyright interest in the
-# software to the public domain. We make this dedication for the benefit
-# of the public at large and to the detriment of our heirs and
-# successors. We intend this dedication to be an overt act of
-# relinquishment in perpetuity of all present and future rights to this
-# software under copyright law.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-# IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
-# OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-# OTHER DEALINGS IN THE SOFTWARE.
-#
-# For more information, please refer to <http://unlicense.org/>
-
 from sysconfig import get_path
 import platform
 import os.path as p
 import subprocess
+import logging
+from ycmd.utils import LOGGER
+
 
 DIR_OF_THIS_SCRIPT = p.abspath( p.dirname( __file__ ) )
 DIR_OF_THIRD_PARTY = p.join( DIR_OF_THIS_SCRIPT, 'third_party' )
@@ -111,25 +84,103 @@ get_path( 'include' ),
 '/usr/include/blkid',
 '-I',
 '/usr/include/glibmm-2.4',
-]
-# '/data/env/kernel/include'
 
-# Set this to the absolute path to the folder (NOT the file!) containing the
-# compile_commands.json file to use that instead of 'flags'. See here for
-# more details: http://clang.llvm.org/docs/JSONCompilationDatabase.html
-#
-# You can get CMake to generate this file for you by adding:
-#   set( CMAKE_EXPORT_COMPILE_COMMANDS 1 )
-# to your CMakeLists.txt file.
-#
-# Most projects will NOT need to set this to anything; you can just change the
-# 'flags' list of compilation flags. Notice that YCM itself uses that approach.
+    '-ferror-limit=0',
+]
+
+kernelFlags = [
+    '-x',
+    'c',
+
+    '-D', 'unix',
+    '-D', 'linux',
+    '-D', '__unix__',
+    '-D', '__STDC__',
+    '-D', '__linux__',
+    '-D', '__KERNEL__',
+    '-D', '__ASSEMBLY__',
+
+    '-std=gnu11',
+    '-fshort-wchar',
+    '-funsigned-char',
+
+    '-fno-PIE',
+    '-fno-common',
+    '-fno-strict-aliasing',
+    '-fno-delete-null-pointer-checks',
+
+    '-ferror-limit=0',
+
+    '-Wno-deprecated-declarations',
+
+    '-I',
+    '/data/env/kernel/include/',
+    '-I',
+    '/data/env/kernel/include/uapi',
+    '-I',
+    '/data/env/kernel/arch/x86/include',
+    '-I',
+    '/data/env/kernel/arch/x86/include/uapi',
+    '-I',
+    '/data/env/kernel/include/generated/uapi',
+    '-I',
+    '/data/env/kernel/arch/x86/include/generated',
+    '-I',
+    '/data/env/kernel/arch/x86/include/generated/uapi',
+
+    '-include',
+    '/data/env/kernel/include/linux/kconfig.h',
+]
+
+
+def FlagsForFile(fileName, **kWargs):
+    logger = logging.getLogger('ycm')
+    loggerT = logging.FileHandler('ycmdT.log')
+    loggerT.setLevel(logging.DEBUG)
+    print("DDDDDDDDD")
+    sys.stdout.write("DDDDD")
+    sys.stdout.flush()
+
+    loggerT.info('DDDDDDDDDDDDD')
+    logging.basicConfig(filename='/tmp/ycmd.log', level=logging.DEBUG)
+    logging.debug('file name: {}'.format(fileName))
+    print(fileName)
+    for i in kWargs:
+        print (*i)
+    return {}
+
+def Settings(**kwargs):
+    '''
+    LOGGER.debug('');
+    kwargs 的数据内容
+    key: filename,      value: /data/code/demo/module/scullc/main.c
+    key: language,      value: cfamily
+    key: client_data,   value: <HashableDict {}>
+    '''
+    projFullPath = kwargs['filename']
+    projLanguage = kwargs['language']
+    LOGGER.debug('project path: {}, language: {}'.format(projFullPath, projLanguage))
+
+    if 'cfamily' == projLanguage:
+        if ('/kernel' in projFullPath) \
+            or ('/linux' in projFullPath) \
+            or ('demo/module' in projFullPath):
+            return {
+                'flags': kernelFlags,
+            }
+        else:
+            return {
+                'flags': flags,
+            }
+    return {}
+
+
+'''
 compilation_database_folder = ''
 
-
-def IsHeaderFile( filename ):
-  extension = p.splitext( filename )[ 1 ]
-  return extension in [ '.h', '.hxx', '.hpp', '.hh' ]
+def IsHeaderFile(filename):
+    extension = p.splitext(filename)[1]
+    return extension in ['.h', '.hxx', '.hpp', '.hh']
 
 
 def FindCorrespondingSourceFile( filename ):
@@ -243,3 +294,4 @@ def PythonSysPath( **kwargs ):
 
   sys_path.append( p.join( DIR_OF_THIRD_PARTY, 'jedi_deps', 'numpydoc' ) )
   return sys_path
+'''

@@ -46,9 +46,9 @@ set autowrite
 set autoindent
 set noswapfile                                  " 禁止生成临时文件
 set ignorecase
-set tabstop=4	                                " 空格替换一个tab
-set shiftwidth=4	                            " 自动缩进4
-set softtabstop=4	                            " 自动缩进4
+set tabstop=4                                   " 空格替换一个tab
+set shiftwidth=4                                " 自动缩进4
+set softtabstop=4                               " 自动缩进4
 set laststatus=2
 set encoding=utf-8                              " 编码设置
 set langmenu=zn_CN.UTF-8                        " 语言设置
@@ -103,18 +103,20 @@ let g:NERDTreeDirArrowExpandable = '▸'
 let g:NERDTreeDirArrowCollapsible = '▾'
 
 " c/c++ 语言自动补全 youcompleteme
+let g:ycm_log_level = 'debug'                                           " 日志级别 debug info
+let g:ycm_keep_logfiles = 0
 "   1. 先进入 ~/.vim/youcompleteme/下并执行 install.py --all --clangd-completer
-let g:ycm_global_ycm_extra_conf =
-  \ '/home/dingjing/.vim/.ycm_extra_conf.py'                            " 默认配置
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'           " 默认配置
 let g:ycm_key_invoke_completion='<C-/>'
 let g:ycm_goto_buffer_command='new-or-existing-tab'                     " open new tabe when jump to definition
+let g:ycm_max_diagnostics_to_display = 0                                " 诊断报错
 let g:ycm_use_clangd = 1
 let g:ycm_clangd_binary_path = '/usr/bin/clangd'
 let g:ycm_clangd_uses_ycmd_caching = 1
 let g:ycm_auto_trigger = 1                                              " 0:关闭补全触发器; 1:打开语义补全触发器
 let g:ycm_confirm_extra_conf = 0                                        " 允许自动加载 .ycm_extra_conf.py
 let g:ycm_max_num_candidates = 20                                       " 语义补全最大候选数量
-let g:ycm_show_diagnostics_ui = 1                                       "
+let g:ycm_show_diagnostics_ui = 10240                                   "
 let g:ycm_add_preview_to_completeopt = 1                                " 为当前补全选项在vim顶部窗口增加预览窗口，用来显示函数原型
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_min_num_of_chars_for_completion = 1                           " 触发补全的最小字符数
@@ -123,7 +125,7 @@ let g:ycm_collect_identifiers_from_tag_files = 1
 let g:ycm_min_num_identifier_candidate_chars = 0                        " 候选补全列表中显示的最小字符数
 let g:ycm_collect_identifiers_from_tags_files = 1                       " 开启tags补全引擎
 let g:ycm_filepath_completion_use_working_dir = 0                       " 按照文件所在目录解释相对路径
-let g:ycm_disable_for_files_larger_than_kb = 10240                      " 大于 xxxkb 不再自动补全
+let g:ycm_disable_for_files_larger_than_kb = 10240000                   " 大于 xxxkb 不再自动补全
 let g:ycm_autoclose_preview_window_after_insertion = 1                  " close preview window after leaving insert mode
 let g:ycm_autoclose_preview_window_after_completion = 1                 " 选中补全后自动关闭预览窗口
 let g:ycm_filetype_whitelist = {'*' : 1}                                " 文件类型白名单
