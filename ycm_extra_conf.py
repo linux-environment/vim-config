@@ -112,7 +112,7 @@ get_path( 'include' ),
 '-I',
 '/usr/include/glibmm-2.4',
 '-I',
-'/data/source/kernel'
+'/data/env/kernel/include'
 ]
 
 # Set this to the absolute path to the folder (NOT the file!) containing the
