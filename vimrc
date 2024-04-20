@@ -10,7 +10,7 @@ filetype off
 set rtp+=/etc/vim/bundle/Vundle.vim/
 
 call vundle#begin()
-Plugin 'bundle/Vundle.vim'                      " vim 插件管理
+Plugin 'VundleVim/Vundle.vim'                   " vim 插件管理
 Plugin 'linux-environment/vim-airline'          " 底栏信息; bn 切换到下一个文件, bp 切换到上一个文件
 Plugin 'linux-environment/syntastic'            " 语法高亮与错误检查
 Plugin 'linux-environment/vim-multiple-cursors' " 多行编辑; 选中多行后按 Ctrl+n 即可进入多行编译
