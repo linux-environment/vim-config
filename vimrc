@@ -1,4 +1,5 @@
 " vundle 安装 git clone https://github.com/linux-environment/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" git@github.com:linux-environment/Vundle.vim.git
 "
 ":PluginInstall     -- 安装插件
 ":PluginUpdate      -- 更新插件
@@ -7,24 +8,26 @@
 set nocompatible
 filetype off
 "set runtimepath+=/etc/vim/vim_runtime/
-set rtp+=/etc/vim/bundle/Vundle.vim/
+set rtp+=/home/dingjing/.vim/bundle/Vundle.vim/
 
 call vundle#begin()
-Plugin 'VundleVim/Vundle.vim'                   " vim 插件管理
-Plugin 'linux-environment/vim-airline'          " 底栏信息; bn 切换到下一个文件, bp 切换到上一个文件
-Plugin 'linux-environment/syntastic'            " 语法高亮与错误检查
-Plugin 'linux-environment/vim-multiple-cursors' " 多行编辑; 选中多行后按 Ctrl+n 即可进入多行编译
-Plugin 'linux-environment/vim-fugitive'         " github 操作 :Git commit, :Git rebase -1, Git mergetool, Gdiffsplit
-Plugin 'linux-environment/nerdtree'             " 侧边栏文件
-Plugin 'linux-environment/completor.vim'        " 自动补全插件
-Plugin 'linux-environment/vim-gutentags'        " 自动更新 ctag
-Plugin 'linux-environment/rainbow_parentheses'  " 成对括号
-Plugin 'linux-environment/vim-commentary'       " 多行注释
-Plugin 'linux-environment/gruvbox'              " 主题颜色
-Plugin 'linux-environment/vim-indent-guides'    " 缩进显示
-Plugin 'linux-environment/ferret'               " 多文件搜索; 执行： Ack xxx 即可搜索
-
-Plugin 'ycm-core/YouCompleteMe'                 " C/C++自动补全
+Plugin 'VundleVim/Vundle.vim'                           " vim 插件管理
+Plugin 'linux-environment/ale'                          " ale
+Plugin 'linux-environment/vim-airline'                  " 底栏信息; bn 切换到下一个文件, bp 切换到上一个文件
+Plugin 'linux-environment/syntastic'                    " 语法高亮与错误检查
+Plugin 'linux-environment/vim-multiple-cursors'         " 多行编辑; 选中多行后按 Ctrl+n 即可进入多行编译
+Plugin 'linux-environment/vim-fugitive'                 " github 操作 :Git commit, :Git rebase -1, Git mergetool, Gdiffsplit
+Plugin 'linux-environment/nerdtree'                     " 侧边栏文件
+Plugin 'linux-environment/completor.vim'                " 自动补全插件
+Plugin 'linux-environment/vim-gutentags'                " 自动更新 ctag
+Plugin 'linux-environment/rainbow_parentheses'          " 成对括号
+Plugin 'linux-environment/vim-commentary'               " 多行注释
+Plugin 'linux-environment/gruvbox'                      " 主题颜色
+Plugin 'linux-environment/everforest'                   " 主题颜色
+Plugin 'linux-environment/vim-indent-guides'            " 缩进显示
+Plugin 'linux-environment/ferret'                       " 多文件搜索; 执行： Ack xxx 即可搜索
+Plugin 'linux-environment/vim-cpp-enhanced-highlight'   " vim C++高亮
+Plugin 'ycm-core/YouCompleteMe'                         " C/C++自动补全
 call vundle#end()
 
 hi clear
@@ -217,7 +220,21 @@ au VimEnter * RainbowParenthesesLoadChevrons
 "   选中 + gc 注释和取消注释
 
 " gruvbox 主题颜色 
-colorscheme gruvbox
+"colorscheme gruvbox
+
+" everforest 主题颜色
+colorscheme everforest
+let g:everforest_background = 'hard'
+let g:everforest_better_performance = 1
+
+" vim-cpp-enhanced-highlight CPP主题颜色
+let g:cpp_posix_standard = 1
+let g:cpp_concepts_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+let g:cpp_experimental_simple_template_highlight = 1
 
 " vim-indent-guides 缩进显示
 let g:indent_guides_enable_on_vim_startup = 1
@@ -232,10 +249,24 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:C_UseTool_cmake = 'no'
 let g:C_UseTool_doxygen = 'no'
 
-
 " 手动 ctags 生成, (1) ctags -R . (2) ctrl + ] 到定义的位置 ctrl + t 返回
 let g:autotagStartMethod = 'fork'
 
+" Ale LSP
+let g:ale_sign_error = 'E'
+let g:ale_sign_warning = 'W'
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 1
+let g:ale_fix_on_save = 0
+let g:ale_completetion_enabled = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let b:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\}
 
 
 " 设置文件头信息
