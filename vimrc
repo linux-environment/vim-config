@@ -188,13 +188,15 @@ let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxIi']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
 " rainbow_parentheses 成对括号
+let g:rbpt_max = 64
+let g:rbpt_loadcmd_toggle = 0
 let g:rbpt_colorpairs = [
+    \ ['darkred',     'SeaGreen3'],
     \ ['brown',       'RoyalBlue3'],
     \ ['Darkblue',    'SeaGreen3'],
     \ ['darkgray',    'DarkOrchid3'],
     \ ['darkgreen',   'firebrick3'],
     \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
     \ ['darkmagenta', 'DarkOrchid3'],
     \ ['brown',       'firebrick3'],
     \ ['gray',        'RoyalBlue3'],
@@ -206,13 +208,12 @@ let g:rbpt_colorpairs = [
     \ ['red',         'firebrick3'],
     \ ]
 
-let g:rbpt_max = 36
-let g:rbpt_loadcmd_toggle = 1
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
-au VimEnter * RainbowParenthesesLoadSquare
-au VimEnter * RainbowParenthesesLoadBraces
-au VimEnter * RainbowParenthesesLoadChevrons
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+au Syntax * RainbowParenthesesLoadChevrons
+
 
 " vim-commentary
 " 使用方法
