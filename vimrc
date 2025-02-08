@@ -19,7 +19,7 @@ Plugin 'linux-environment/vim-multiple-cursors'         " 多行编辑; 选中�
 Plugin 'linux-environment/vim-fugitive'                 " github 操作 :Git commit, :Git rebase -1, Git mergetool, Gdiffsplit
 Plugin 'linux-environment/nerdtree'                     " 侧边栏文件
 Plugin 'linux-environment/completor.vim'                " 自动补全插件
-Plugin 'linux-environment/vim-gutentags'                " 自动更新 ctag
+"Plugin 'ludovicchabant/vim-gutentags'                	" 自动更新 ctag
 Plugin 'linux-environment/rainbow_parentheses'          " 成对括号
 Plugin 'linux-environment/vim-commentary'               " 多行注释
 Plugin 'linux-environment/gruvbox'                      " 主题颜色
@@ -29,6 +29,7 @@ Plugin 'linux-environment/ferret'                       " 多文件搜索; 执�
 Plugin 'linux-environment/vim-cpp-enhanced-highlight'   " vim C++高亮
 Plugin 'ycm-core/YouCompleteMe'                         " C/C++自动补全
 Plugin 'FittenTech/fittencode.vim'						" 使用 fitten AI智能补全
+Plugin 'dingjingmaster/vim-gtags' 						" 使用 gtags
 call vundle#end()
 
 hi clear
@@ -177,16 +178,20 @@ let g:completor_auto_trigger = 1                                        " 自动
 "   ctrl + ]        -- 跳转到对应定义位置
 "   ctrl + o        -- 回退到原来位置
 "   ctrl - w + ]    -- 新窗口预览定义
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']    " 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
-let g:gutentags_ctags_tagfile = '.tags'                                 " 生成数据文件的名称
-let s:vim_tags = expand('~/.cache/tags')                                " 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let g:gutentags_cache_dir = s:vim_tags                                  " 检测 ~/.cache/tags 不存在就新建
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']    " 配置 ctags 的参数
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxIi']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+"let g:gutentags_project_root = ['.root', '.svn', '.git', '.project']    " 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
+"let g:gutentags_ctags_tagfile = '.tags'                                 " 生成数据文件的名称
+"let s:vim_tags = expand('~/.cache/tags')                                " 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
+"let g:gutentags_cache_dir = s:vim_tags                                  " 检测 ~/.cache/tags 不存在就新建
+"if !isdirectory(s:vim_tags)
+"   silent! call mkdir(s:vim_tags, 'p')
+"endif
+"let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']    " 配置 ctags 的参数
+"let g:gutentags_ctags_extra_args += ['--c++-kinds=+pxI']
+"let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+"let g:gutentags_enabled = 1
+"let g:airline#extensions#gutentags#enabled = 1 							" 允许
+
+" gtags
 
 " rainbow_parentheses 成对括号
 let g:rbpt_max = 64
@@ -253,7 +258,7 @@ set ts=4 sw=4 noet
 " fitten
 " 按 Ctrl + L 触发AI自动补全提醒
 " 按 <TAB> 触发补全
-autocmd BufNewFile * FittenAutoCompletionOn
+au VimEnter * silent! FittenAutoCompletionOn
 
 " c 语言插件 
 let g:C_UseTool_cmake = 'no'
