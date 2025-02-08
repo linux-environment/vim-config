@@ -28,6 +28,7 @@ Plugin 'linux-environment/vim-indent-guides'            " 缩进显示
 Plugin 'linux-environment/ferret'                       " 多文件搜索; 执行： Ack xxx 即可搜索
 Plugin 'linux-environment/vim-cpp-enhanced-highlight'   " vim C++高亮
 Plugin 'ycm-core/YouCompleteMe'                         " C/C++自动补全
+Plugin 'FittenTech/fittencode.vim'						" 使用 fitten AI智能补全
 call vundle#end()
 
 hi clear
@@ -248,6 +249,11 @@ set ts=4 sw=4 noet
 " 使用方法
 "   在 vim 命令模式下执行 :Ack <要搜索的字符串>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" fitten
+" 按 Ctrl + L 触发AI自动补全提醒
+" 按 <TAB> 触发补全
+autocmd BufNewFile * FittenAutoCompletionOn
 
 " c 语言插件 
 let g:C_UseTool_cmake = 'no'
