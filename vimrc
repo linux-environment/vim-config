@@ -28,48 +28,49 @@ Plugin 'linux-environment/vim-indent-guides'            " 缩进显示
 Plugin 'linux-environment/ferret'                       " 多文件搜索; 执行： Ack xxx 即可搜索
 Plugin 'linux-environment/vim-cpp-enhanced-highlight'   " vim C++高亮
 Plugin 'ycm-core/YouCompleteMe'                         " C/C++自动补全
-Plugin 'FittenTech/fittencode.vim'						" 使用 fitten AI智能补全
+"Plugin 'FittenTech/fittencode.vim'						" 使用 fitten AI智能补全
 Plugin 'dingjingmaster/vim-gtags' 						" 使用 gtags
 call vundle#end()
 
 hi clear
 syntax on
-retab                                           " 以前的tab也用4空格代替
+retab                                           		" 以前的tab也用4空格代替
 set nu
-set expandtab                                   " 空格替换tab
-set exrc
+set expandtab                                   		" tab替换空格
+set noexrc 												" 忽略当前目录下的 vimrc 配置文件
 set secure
-set cindent                                     " c 自动缩进
+set cindent                                     		" c 自动缩进
 set ruler
 set magic
 set showmatch
 set hlsearch
-set cursorline                                  " 光标行
-set cursorcolumn                                " 光标列
-set autoread                                    " 自动检测外部更改
+set cursorline                                  		" 光标行
+set cursorcolumn                                		" 光标列
+set autoread                                    		" 自动检测外部更改
 set autowrite
 set autoindent
-set noswapfile                                  " 禁止生成临时文件
+set noswapfile                                  		" 禁止生成临时文件
 set ignorecase
-set tabstop=4                                   " 空格替换一个tab
-set shiftwidth=4                                " 自动缩进4
-set softtabstop=4                               " 自动缩进4
+set tabstop=4                                   		" 空格替换一个tab
+set shiftwidth=4                                		" 自动缩进4
+set softtabstop=4                               		" 自动缩进4
 set laststatus=2
-set encoding=utf-8                              " 编码设置
-set langmenu=zn_CN.UTF-8                        " 语言设置
-set helplang=cn                                 " 语言设置
-set foldenable                                  " 允许折叠
-set foldmethod=syntax                           " 按语法折叠
-set foldcolumn=2                                " 折叠区域宽度
-set backspace=indent,eol,start                  " 设置退格删除
+set encoding=utf-8                              		" 文件内部 编码设置
+set langmenu=zh_CN.UTF-8                        		" 语言设置
+set helplang=cn                                 		" 语言设置
+set foldenable                                  		" 允许折叠
+set foldmethod=syntax                           		" 按语法折叠
+set foldcolumn=2                                		" 折叠区域宽度
+set backspace=indent,eol,start                  		" 设置退格删除
 set guifont=Courier_New:h9:cANSI
-set clipboard+=unnamed                          " 共享粘贴板
+set clipboard+=unnamed                          		" 共享粘贴板
 set fileencoding=utf-8
-set background=dark                             " 使用黑色主题
+set fileencodings=utf-8
+set background=dark                             		" 使用黑色主题
 
 " 按住 shift 再鼠标右键
 if has('mouse')
-set mouse-=a                                    " 使用鼠标
+set mouse-=a                                    		" 使用鼠标
 endif
 
 filetype plugin indent on
@@ -87,7 +88,6 @@ vnoremap <C-y> "+y                              " 支持在Visual模式下，通
 " vim-airline 漂亮的底栏
 let g:airline#extensions#tabline#enabled = 1                " 路径
 let g:airline#extensions#tabline#formatter = 'unique_tail'  " 路径展示
-nnoremap <C-p> :bp<CR>                          " ctrl + p 上一个Buffer文件
 
 " vim-multiple-cursors 多行编辑
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
@@ -156,12 +156,6 @@ let g:ycm_semantic_triggers =  {
   \   'erlang': [':'],
   \ }
 
-
-nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
-nnoremap <leader>jdf :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>jdc :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>st :YcmCompleter GetType<CR>
-nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
 
 " completor.vim 自动补全插件配置
 " c/c++ 配置，使用 clang 补全
@@ -258,7 +252,7 @@ set ts=4 sw=4 noet
 " fitten
 " 按 Ctrl + L 触发AI自动补全提醒
 " 按 <TAB> 触发补全
-au VimEnter * silent! FittenAutoCompletionOn
+"au VimEnter * silent! FittenAutoCompletionOn
 
 " c 语言插件 
 let g:C_UseTool_cmake = 'no'
@@ -353,3 +347,17 @@ autocmd BufNewFile * normal G
 " 记住上次打开的位置
 au BufReadPost * if line("'\"") > 0|if line("'\"") <= line("$")|exe("norm '\"")|else|exe "norm $"|endif|endif
 
+
+" 快捷键 —— YouCompleteMe
+nnoremap <leader>jd :YcmCompleter GoToDefinitionElseDeclaration<CR>
+nnoremap <leader>jdf :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>jdc :YcmCompleter GoToDeclaration<CR>
+nnoremap <leader>st :YcmCompleter GetType<CR>
+nnoremap <F5> :YcmForceCompileAndDiagnostics<CR>
+
+" 快捷键 —— buffers
+nnoremap <C-p> :bp<CR> 																				" 上一个buffer
+nnoremap <C-b> :bn<CR> 																				" 下一个buffer
+
+" make 文件保留制表符
+autocmd FileType make setlocal noexpandtab
